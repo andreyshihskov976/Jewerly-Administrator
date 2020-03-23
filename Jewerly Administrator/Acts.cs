@@ -15,6 +15,7 @@ namespace Jewerly_Administrator
         MySqlOperations MySqlOperations = null;
         MySqlQueries MySqlQueries = null;
         string ID_Acta = string.Empty;
+        int Index = 0;
         public Acts(MySqlOperations mySqlOperations, MySqlQueries mySqlQueries)
         {
             InitializeComponent();
@@ -37,7 +38,6 @@ namespace Jewerly_Administrator
             dateTimePicker3.MinDate = dateTimePicker3.Value;
             dateTimePicker1.Value = dateTimePicker3.Value;
             dateTimePicker1.MinDate = dateTimePicker3.MinDate;
-            
             dataGridView1.Columns[0].Visible = false;
         }
 
@@ -62,6 +62,8 @@ namespace Jewerly_Administrator
                     date1, date2);
                 Load_Table1();
                 Clear1();
+                dataGridView1.ClearSelection();
+                dataGridView1.Rows[dataGridView1.Rows.Count - 1].Selected = true;
             }
             else
                 MessageBox.Show("Проверьте, все ли поля заполнены.", "Прежупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -69,6 +71,7 @@ namespace Jewerly_Administrator
 
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
+            Index = dataGridView1.SelectedRows[0].Index;
             MySqlOperations.Search_In_ComboBox(dataGridView1.SelectedRows[0].Cells[2].Value.ToString(), comboBox2);
             MySqlOperations.Search_In_ComboBox(dataGridView1.SelectedRows[0].Cells[3].Value.ToString(), comboBox3);
             MySqlOperations.Search_In_ComboBox(dataGridView1.SelectedRows[0].Cells[4].Value.ToString(), comboBox4);
@@ -93,6 +96,8 @@ namespace Jewerly_Administrator
                     date1, date2);
                 Load_Table1();
                 Clear1();
+                dataGridView1.ClearSelection();
+                dataGridView1.Rows[Index].Selected = true;
             }
             else
                 MessageBox.Show("Проверьте, все ли поля заполнены.", "Прежупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -198,7 +203,13 @@ namespace Jewerly_Administrator
             {
                 dateTimePicker1.Value = dateTimePicker3.Value;
             }
-            catch { }
+            catch {}
+        }
+
+        private void dataGridView2_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
+        {
+            if (MessageBox.Show("Вы действительно хотите удалить запись?", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                MySqlOperations.Insert_Update_Delete(MySqlQueries.Delete_Sostav_Acta, dataGridView2.SelectedRows[0].Cells[0].Value.ToString());
         }
     }
 }

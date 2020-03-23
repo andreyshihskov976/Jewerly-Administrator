@@ -61,6 +61,12 @@
     <Compile Include="Acts.Designer.cs">
       <DependentUpon>Acts.cs</DependentUpon>
     </Compile>
+    <Compile Include="Cheki.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cheki.Designer.cs">
+      <DependentUpon>Cheki.cs</DependentUpon>
+    </Compile>
     <Compile Include="Clienty.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -103,6 +109,9 @@
     </Compile>
     <EmbeddedResource Include="Acts.resx">
       <DependentUpon>Acts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cheki.resx">
+      <DependentUpon>Cheki.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Clienty.resx">
       <DependentUpon>Clienty.cs</DependentUpon>

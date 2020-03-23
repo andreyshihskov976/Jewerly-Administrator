@@ -37,9 +37,11 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.panel1.SuspendLayout();
+            this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -52,16 +54,16 @@
             this.panel1.Controls.Add(this.button2);
             this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.label1);
-            this.panel1.Location = new System.Drawing.Point(0, 27);
+            this.panel1.Location = new System.Drawing.Point(0, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(309, 370);
+            this.panel1.Size = new System.Drawing.Size(309, 394);
             this.panel1.TabIndex = 0;
             // 
             // button7
             // 
             this.button7.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.button7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.button7.Location = new System.Drawing.Point(44, 298);
+            this.button7.Location = new System.Drawing.Point(44, 327);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(224, 35);
             this.button7.TabIndex = 7;
@@ -73,7 +75,7 @@
             // 
             this.button6.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.button6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.button6.Location = new System.Drawing.Point(44, 257);
+            this.button6.Location = new System.Drawing.Point(44, 286);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(224, 35);
             this.button6.TabIndex = 6;
@@ -85,7 +87,7 @@
             // 
             this.button5.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.button5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.button5.Location = new System.Drawing.Point(44, 216);
+            this.button5.Location = new System.Drawing.Point(44, 245);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(224, 35);
             this.button5.TabIndex = 5;
@@ -97,7 +99,7 @@
             // 
             this.button4.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.button4.Location = new System.Drawing.Point(44, 175);
+            this.button4.Location = new System.Drawing.Point(44, 204);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(224, 35);
             this.button4.TabIndex = 4;
@@ -109,7 +111,7 @@
             // 
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.button3.Location = new System.Drawing.Point(44, 134);
+            this.button3.Location = new System.Drawing.Point(44, 163);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(224, 35);
             this.button3.TabIndex = 3;
@@ -121,18 +123,19 @@
             // 
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.button2.Location = new System.Drawing.Point(44, 93);
+            this.button2.Location = new System.Drawing.Point(44, 122);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(224, 35);
             this.button2.TabIndex = 2;
             this.button2.Text = "Оформить чек";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button1
             // 
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.button1.Location = new System.Drawing.Point(44, 52);
+            this.button1.Location = new System.Drawing.Point(44, 81);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(224, 35);
             this.button1.TabIndex = 1;
@@ -143,27 +146,34 @@
             // label1
             // 
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(0, 0);
+            this.label1.Location = new System.Drawing.Point(0, 29);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(309, 30);
             this.label1.TabIndex = 0;
             this.label1.Text = "Главное меню";
             this.label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
-            // menuStrip1
-            // 
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(800, 24);
-            this.menuStrip1.TabIndex = 1;
-            this.menuStrip1.Text = "menuStrip1";
-            // 
             // panel2
             // 
-            this.panel2.Location = new System.Drawing.Point(316, 27);
+            this.panel2.Controls.Add(this.dataGridView1);
+            this.panel2.Location = new System.Drawing.Point(315, 3);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(309, 370);
+            this.panel2.Size = new System.Drawing.Size(309, 394);
             this.panel2.TabIndex = 2;
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView1.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowHeadersVisible = false;
+            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridView1.Size = new System.Drawing.Size(309, 394);
+            this.dataGridView1.TabIndex = 0;
             // 
             // MainMenu
             // 
@@ -174,9 +184,7 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "MainMenu";
@@ -184,9 +192,11 @@
             this.Text = "Главное меню";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainMenu_FormClosed);
             this.Load += new System.EventHandler(this.MainMenu_Load);
+            this.Shown += new System.EventHandler(this.MainMenu_Shown);
             this.panel1.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -201,8 +211,8 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.DataGridView dataGridView1;
     }
 }
 
