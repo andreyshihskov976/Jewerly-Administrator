@@ -54,5 +54,11 @@ namespace Jewerly_Administrator
             Clienty clienty = new Clienty(MySqlOperations, MySqlQueries);
             clienty.Show();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Acts acts = new Acts(MySqlOperations, MySqlQueries);
+            acts.Show();
+        }
     }
 }
