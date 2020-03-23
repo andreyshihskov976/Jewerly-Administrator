@@ -47,6 +47,8 @@ namespace Jewerly_Administrator
             textBox1.Text = dataGridView1.SelectedRows[0].Cells[1].Value.ToString();
             MySqlOperations.Search_In_ComboBox(dataGridView1.SelectedRows[0].Cells[2].Value.ToString(), comboBox1);
             numericUpDown1.Value = decimal.Parse(dataGridView1.SelectedRows[0].Cells[3].Value.ToString());
+            button2.Enabled = true;
+            button1.Enabled = false;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -68,6 +70,8 @@ namespace Jewerly_Administrator
             textBox1.Text = "";
             comboBox1.SelectedItem = comboBox1.Items[0];
             numericUpDown1.Value = numericUpDown1.Minimum;
+            button1.Enabled = true;
+            button2.Enabled = false;
         }
 
         private void dataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)

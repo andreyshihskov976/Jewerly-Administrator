@@ -30,6 +30,8 @@
         {
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.dateTimePicker3 = new System.Windows.Forms.DateTimePicker();
+            this.label8 = new System.Windows.Forms.Label();
             this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
             this.label2 = new System.Windows.Forms.Label();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
@@ -57,8 +59,6 @@
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.dateTimePicker3 = new System.Windows.Forms.DateTimePicker();
-            this.label8 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
@@ -106,6 +106,27 @@
             this.panel1.Size = new System.Drawing.Size(362, 276);
             this.panel1.TabIndex = 8;
             // 
+            // dateTimePicker3
+            // 
+            this.dateTimePicker3.CalendarFont = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.dateTimePicker3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.dateTimePicker3.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dateTimePicker3.Location = new System.Drawing.Point(232, 3);
+            this.dateTimePicker3.Name = "dateTimePicker3";
+            this.dateTimePicker3.Size = new System.Drawing.Size(122, 26);
+            this.dateTimePicker3.TabIndex = 24;
+            this.dateTimePicker3.ValueChanged += new System.EventHandler(this.dateTimePicker3_ValueChanged);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.label8.Location = new System.Drawing.Point(1, 8);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(155, 20);
+            this.label8.TabIndex = 23;
+            this.label8.Text = "Дата оформления:";
+            // 
             // dateTimePicker2
             // 
             this.dateTimePicker2.CalendarFont = new System.Drawing.Font("Microsoft Sans Serif", 12F);
@@ -140,7 +161,7 @@
             // comboBox4
             // 
             this.comboBox4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.comboBox4.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.comboBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.comboBox4.FormattingEnabled = true;
             this.comboBox4.Location = new System.Drawing.Point(104, 103);
@@ -151,7 +172,7 @@
             // comboBox3
             // 
             this.comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.comboBox3.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.comboBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.comboBox3.FormattingEnabled = true;
             this.comboBox3.Location = new System.Drawing.Point(104, 69);
@@ -162,7 +183,7 @@
             // comboBox2
             // 
             this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.comboBox2.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.comboBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.comboBox2.FormattingEnabled = true;
             this.comboBox2.Location = new System.Drawing.Point(104, 35);
@@ -204,11 +225,11 @@
             // 
             this.button4.AutoSize = true;
             this.button4.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.button4.Location = new System.Drawing.Point(287, 240);
+            this.button4.Location = new System.Drawing.Point(287, 242);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(67, 32);
+            this.button4.Size = new System.Drawing.Size(69, 29);
             this.button4.TabIndex = 10;
             this.button4.Text = "Поиск";
             this.button4.UseVisualStyleBackColor = true;
@@ -226,11 +247,11 @@
             // button3
             // 
             this.button3.AutoSize = true;
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.button3.Location = new System.Drawing.Point(259, 202);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(95, 32);
+            this.button3.Size = new System.Drawing.Size(97, 32);
             this.button3.TabIndex = 8;
             this.button3.Text = "Очистить";
             this.button3.UseVisualStyleBackColor = true;
@@ -240,11 +261,11 @@
             // 
             this.button2.AutoSize = true;
             this.button2.Enabled = false;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.button2.Location = new System.Drawing.Point(115, 202);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(140, 32);
+            this.button2.Size = new System.Drawing.Size(142, 32);
             this.button2.TabIndex = 7;
             this.button2.Text = "Редактировать";
             this.button2.UseVisualStyleBackColor = true;
@@ -253,7 +274,7 @@
             // button1
             // 
             this.button1.AutoSize = true;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.button1.Location = new System.Drawing.Point(5, 202);
             this.button1.Name = "button1";
@@ -284,7 +305,7 @@
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.RowHeadersVisible = false;
             this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView2.Size = new System.Drawing.Size(538, 220);
+            this.dataGridView2.Size = new System.Drawing.Size(538, 145);
             this.dataGridView2.TabIndex = 10;
             this.dataGridView2.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView2_CellDoubleClick);
             // 
@@ -309,11 +330,11 @@
             // 
             this.button5.AutoSize = true;
             this.button5.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button5.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.button5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.button5.Location = new System.Drawing.Point(287, 108);
+            this.button5.Location = new System.Drawing.Point(287, 110);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(67, 32);
+            this.button5.Size = new System.Drawing.Size(69, 29);
             this.button5.TabIndex = 30;
             this.button5.Text = "Поиск";
             this.button5.UseVisualStyleBackColor = true;
@@ -331,11 +352,11 @@
             // button6
             // 
             this.button6.AutoSize = true;
-            this.button6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button6.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.button6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.button6.Location = new System.Drawing.Point(259, 70);
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(95, 32);
+            this.button6.Size = new System.Drawing.Size(97, 32);
             this.button6.TabIndex = 28;
             this.button6.Text = "Очистить";
             this.button6.UseVisualStyleBackColor = true;
@@ -345,11 +366,11 @@
             // 
             this.button7.AutoSize = true;
             this.button7.Enabled = false;
-            this.button7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button7.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.button7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.button7.Location = new System.Drawing.Point(115, 70);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(140, 32);
+            this.button7.Size = new System.Drawing.Size(142, 32);
             this.button7.TabIndex = 27;
             this.button7.Text = "Редактировать";
             this.button7.UseVisualStyleBackColor = true;
@@ -358,7 +379,7 @@
             // button8
             // 
             this.button8.AutoSize = true;
-            this.button8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button8.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.button8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.button8.Location = new System.Drawing.Point(5, 70);
             this.button8.Name = "button8";
@@ -420,7 +441,7 @@
             // comboBox1
             // 
             this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.comboBox1.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.comboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
@@ -440,27 +461,6 @@
             this.label6.Size = new System.Drawing.Size(90, 20);
             this.label6.TabIndex = 18;
             this.label6.Text = "Материал:";
-            // 
-            // dateTimePicker3
-            // 
-            this.dateTimePicker3.CalendarFont = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.dateTimePicker3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.dateTimePicker3.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePicker3.Location = new System.Drawing.Point(232, 3);
-            this.dateTimePicker3.Name = "dateTimePicker3";
-            this.dateTimePicker3.Size = new System.Drawing.Size(122, 26);
-            this.dateTimePicker3.TabIndex = 24;
-            this.dateTimePicker3.ValueChanged += new System.EventHandler(this.dateTimePicker3_ValueChanged);
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label8.Location = new System.Drawing.Point(1, 8);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(155, 20);
-            this.label8.TabIndex = 23;
-            this.label8.Text = "Дата оформления:";
             // 
             // Acts
             // 

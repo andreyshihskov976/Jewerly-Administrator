@@ -48,6 +48,8 @@ namespace Jewerly_Administrator
             textBox4.Text = dataGridView1.SelectedRows[0].Cells[1].Value.ToString().Split(' ')[2];
             maskedTextBox1.Text = dataGridView1.SelectedRows[0].Cells[2].Value.ToString();
             maskedTextBox2.Text = dataGridView1.SelectedRows[0].Cells[3].Value.ToString();
+            button1.Enabled = false;
+            button2.Enabled = true;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -71,6 +73,8 @@ namespace Jewerly_Administrator
             textBox4.Text = "";
             maskedTextBox1.Clear();
             maskedTextBox2.Clear();
+            button2.Enabled = false;
+            button1.Enabled = true;
         }
 
         private void dataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)

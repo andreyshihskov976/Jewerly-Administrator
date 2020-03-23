@@ -59,7 +59,7 @@
             // 
             // button7
             // 
-            this.button7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button7.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.button7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.button7.Location = new System.Drawing.Point(44, 298);
             this.button7.Name = "button7";
@@ -71,7 +71,7 @@
             // 
             // button6
             // 
-            this.button6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button6.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.button6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.button6.Location = new System.Drawing.Point(44, 257);
             this.button6.Name = "button6";
@@ -83,7 +83,7 @@
             // 
             // button5
             // 
-            this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button5.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.button5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.button5.Location = new System.Drawing.Point(44, 216);
             this.button5.Name = "button5";
@@ -95,7 +95,7 @@
             // 
             // button4
             // 
-            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.button4.Location = new System.Drawing.Point(44, 175);
             this.button4.Name = "button4";
@@ -107,7 +107,7 @@
             // 
             // button3
             // 
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.button3.Location = new System.Drawing.Point(44, 134);
             this.button3.Name = "button3";
@@ -119,7 +119,7 @@
             // 
             // button2
             // 
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.button2.Location = new System.Drawing.Point(44, 93);
             this.button2.Name = "button2";
@@ -130,7 +130,7 @@
             // 
             // button1
             // 
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.button1.Location = new System.Drawing.Point(44, 52);
             this.button1.Name = "button1";

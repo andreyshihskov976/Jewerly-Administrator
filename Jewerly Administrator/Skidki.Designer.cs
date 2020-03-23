@@ -79,11 +79,11 @@
             // 
             this.button4.AutoSize = true;
             this.button4.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.button4.Location = new System.Drawing.Point(289, 106);
+            this.button4.Location = new System.Drawing.Point(289, 107);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(67, 32);
+            this.button4.Size = new System.Drawing.Size(69, 29);
             this.button4.TabIndex = 7;
             this.button4.Text = "Поиск";
             this.button4.UseVisualStyleBackColor = true;
@@ -101,7 +101,7 @@
             // comboBox1
             // 
             this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.comboBox1.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.comboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.comboBox1.Items.AddRange(new object[] {
             "3%",
@@ -130,11 +130,11 @@
             // button3
             // 
             this.button3.AutoSize = true;
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.button3.Location = new System.Drawing.Point(261, 70);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(95, 32);
+            this.button3.Size = new System.Drawing.Size(97, 32);
             this.button3.TabIndex = 5;
             this.button3.Text = "Очистить";
             this.button3.UseVisualStyleBackColor = true;
@@ -143,11 +143,11 @@
             // button2
             // 
             this.button2.AutoSize = true;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.button2.Location = new System.Drawing.Point(116, 70);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(140, 32);
+            this.button2.Size = new System.Drawing.Size(142, 32);
             this.button2.TabIndex = 4;
             this.button2.Text = "Редактировать";
             this.button2.UseVisualStyleBackColor = true;
@@ -156,7 +156,7 @@
             // button1
             // 
             this.button1.AutoSize = true;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.button1.Location = new System.Drawing.Point(7, 70);
             this.button1.Name = "button1";

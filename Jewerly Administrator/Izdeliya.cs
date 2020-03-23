@@ -35,13 +35,18 @@ namespace Jewerly_Administrator
             {
                 MySqlOperations.Insert_Update_Delete(MySqlQueries.Insert_Izdeliya, null, textBox1.Text);
                 Load_Table();
-                textBox1.Text = "";
+                Clear();
             }
             else
                 MessageBox.Show("Проверьте, все ли поля заполнены.", "Прежупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
-        private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e) => textBox1.Text = dataGridView1.SelectedRows[0].Cells[1].Value.ToString();
+        private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            textBox1.Text = dataGridView1.SelectedRows[0].Cells[1].Value.ToString();
+            button1.Enabled = false;
+            button2.Enabled = true;
+        }
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -49,13 +54,20 @@ namespace Jewerly_Administrator
             {
                 MySqlOperations.Insert_Update_Delete(MySqlQueries.Update_Izdeliya, dataGridView1.SelectedRows[0].Cells[0].Value.ToString(), textBox1.Text);
                 Load_Table();
-                textBox1.Text = "";
+                Clear();
             }
             else
                 MessageBox.Show("Проверьте, все ли поля заполнены.", "Прежупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
-        private void button3_Click(object sender, EventArgs e) => textBox1.Text = "";
+        private void button3_Click(object sender, EventArgs e) => Clear();
+
+        private void Clear()
+        {
+            textBox1.Text = "";
+            button2.Enabled = false;
+            button1.Enabled = true;
+        }
 
         private void dataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
         {
