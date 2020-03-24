@@ -55,7 +55,7 @@ namespace Jewerly_Administrator
         public string Select_Acts = $@"SET lc_time_names = 'ru_RU';
 SELECT acts.ID_Acta,CONCAT('№ ',acts.ID_Acta, ' от ',DATE_FORMAT(acts.Date,'%d %M %Y')) AS 'Договор' , CONCAT(clienty.Familiya, ' ',clienty.Imya,' ', clienty.Otchestvo) AS 'Ф.И.О. Клиента', 
 CONCAT(sotrudniki.Familiya, ' ',sotrudniki.Imya,' ', sotrudniki.Otchestvo) AS 'Ф.И.О. Сотрудника', 
-izdeliya.Name AS 'Наименование изделия' , Date_N AS 'Дата начала работы', Date_K AS 'Дата окончания работы' 
+izdeliya.Name AS 'Наименование изделия' , Razmer AS 'Размер', Dlina AS 'Длина', Date_N AS 'Дата начала работы', Date_K AS 'Дата окончания работы' 
 FROM acts INNER JOIN clienty ON acts.ID_Clienta = clienty.ID_Clienta
 INNER JOIN sotrudniki ON acts.ID_Sotrudnika = sotrudniki.ID_Sotrudnika
 INNER JOIN izdeliya ON acts.ID_Izdeliya = izdeliya.ID_Izdeliya;";
@@ -80,16 +80,19 @@ cheki.Stoimost_raboty AS 'Стоимость работы мастера',
 cheki.Stoimost_proby AS 'Стоимость штамп-ния пробы',
 cheki.Summa AS 'Сумма без учета скидки',
 CONCAT(skidki.Name, ', ',skidki.Procent) AS 'Предусмотренная скидка',
-cheki.Full_Summa AS 'Сумма с учетом скидки'
+cheki.Full_Summa AS 'Сумма с учетом скидки',
+cheki.Garantiya AS 'Гарантия'
 FROM cheki INNER JOIN acts ON cheki.ID_Acta = acts.ID_Acta
 INNER JOIN skidki ON cheki.ID_Skidki = skidki.ID_Skidki;";
 
         public string Select_Date_Cheka = $@"SELECT DATE_FORMAT(cheki.Date, '%d.%m.%Y') FROM cheki WHERE cheki.ID_Cheka = @ID;";
 
-        public string Select_Sostav_Cheka = $@"SELECT sostav_acta.ID_Posicii, materialy.Name AS 'Наименование материала', materialy.Stoimost AS 'Стоимость', 
+        public string Select_Sostav_Cheka = $@"SELECT materialy.Name AS 'Наименование материала', materialy.Stoimost AS 'Стоимость', 
 sostav_acta.Kolichestvo AS 'Вес', ROUND((sostav_acta.Kolichestvo * materialy.Stoimost),2) AS 'Сумма'
 FROM sostav_acta INNER JOIN materialy ON sostav_acta.ID_Materiala = materialy.ID_Materiala
-WHERE sostav_acta.ID_Acta = @ID;";
+INNER JOIN acts ON sostav_acta.ID_Acta = acts.ID_Acta
+inner JOIN cheki ON cheki.ID_Acta = acts.ID_Acta
+WHERE cheki.ID_Cheka = @ID;";
 
         public string Select_Sum_Cheka = $@"SELECT (SUM(ROUND((sostav_acta.Kolichestvo * materialy.Stoimost),2))+@Value1+@Value2+@Value3) AS 'Сумма'
 FROM sostav_acta INNER JOIN materialy ON sostav_acta.ID_Materiala = materialy.ID_Materiala
@@ -100,18 +103,21 @@ FROM sostav_acta INNER JOIN materialy ON sostav_acta.ID_Materiala = materialy.ID
 WHERE sostav_acta.ID_Acta = @ID;";
 
         public string Print_Cheki = $@"SET lc_time_names = 'ru_RU';
-SELECT cheki.ID_Cheka, CONCAT('№ ', cheki.ID_Cheka, ' от ', DATE_FORMAT(cheki.Date,'%d %M %Y')) AS 'Чек',
-CONCAT('№ ', acts.ID_Acta, ' от ', DATE_FORMAT(cheki.Date,'%d %M %Y')) AS 'На основании договора',
-CONCAT(clienty.Familiya,' ',clienty.Imya,' ',clienty.Otchestvo) AS 'Клиент (Ф.И.О.)',
-CONCAT(sotrudniki.Familiya,' ',sotrudniki.Imya,' ',sotrudniki.Otchestvo) AS 'Сотрудник (Ф.И.О.)',
-CONCAT(clienty.Familiya,' ',clienty.Imya,' ',clienty.Otchestvo) AS 'Клиент (Ф.И.О.)',
-izdeliya.Name AS 'Наименование изделия',
-cheki.Stoimost_modeli AS 'Стоимость воск. модели',
-cheki.Stoimost_raboty AS 'Стоимость работы мастера',
-cheki.Stoimost_proby AS 'Стоимость штамп-ния пробы',
-cheki.Summa AS 'Сумма без учета скидки',
-CONCAT(skidki.Name, ', ',skidki.Procent) AS 'Предусмотренная скидка',
-cheki.Full_Summa AS 'Сумма с учетом скидки'
+SELECT CONCAT(cheki.ID_Cheka,';', 
+CONCAT('№ ', cheki.ID_Cheka, ' от ', DATE_FORMAT(cheki.Date,'%d %M %Y')),';',
+CONCAT('№ ', acts.ID_Acta, ' от ', DATE_FORMAT(cheki.Date,'%d %M %Y')),';',
+CONCAT(sotrudniki.Familiya,' ',sotrudniki.Imya,' ',sotrudniki.Otchestvo),';',
+CONCAT(clienty.Familiya,' ',clienty.Imya,' ',clienty.Otchestvo),';',
+izdeliya.Name,';',
+acts.Razmer,';',
+acts.Dlina,';',
+cheki.Stoimost_modeli,';',
+cheki.Stoimost_raboty,';',
+cheki.Stoimost_proby,';',
+cheki.Summa,';',
+CONCAT(skidki.Name, ', ',skidki.Procent),';',
+cheki.Full_Summa,';',
+cheki.Garantiya)
 FROM cheki INNER JOIN acts ON cheki.ID_Acta = acts.ID_Acta
 INNER JOIN sotrudniki ON acts.ID_Sotrudnika = sotrudniki.ID_Sotrudnika
 INNER JOIN clienty ON acts.ID_Clienta = clienty.ID_Clienta
@@ -123,10 +129,57 @@ WHERE cheki.ID_Cheka = @ID;";
 FROM acts LEFT JOIN cheki ON acts.ID_Acta = cheki.ID_Acta 
 WHERE cheki.ID_Cheka IS NULL AND acts.Date_K <= CURDATE());";
 
-        public string Select_Zaversh_Acts = $@"SELECT CONCAT('№ ',acts.ID_Acta, ' от ', DATE_FORMAT(acts.Date,'%d %M %Y')) AS 'Завершенные акты', izdeliya.Name AS 'Завершенные изделия'
+        public string Select_Zaversh_Acts = $@"SET lc_time_names = 'ru_RU'; 
+SELECT CONCAT('№ ',acts.ID_Acta, ' от ', DATE_FORMAT(acts.Date,'%d %M %Y')) AS 'Завершенные акты', izdeliya.Name AS 'Завершенные изделия'
 FROM acts LEFT JOIN cheki ON acts.ID_Acta = cheki.ID_Acta
 INNER JOIN izdeliya ON acts.ID_Izdeliya = izdeliya.ID_Izdeliya
 WHERE cheki.ID_Cheka IS NULL AND acts.Date_K <= CURDATE();";
+
+        public string Select_Exists_Sostav_Acta = $@"SELECT EXISTS(SELECT * FROM sostav_acta 
+INNER JOIN acts ON sostav_acta.ID_Acta = acts.ID_Acta 
+WHERE acts.ID_Acta = @ID);";
+
+        public string Print_Acts = $@"SELECT CONCAT(CONCAT('№ ',acts.ID_Acta,' от ',Date_Format(acts.Date, '%d %M %Y')),';',
+CONCAT(clienty.Familiya,' ', clienty.Imya,' ', clienty.Otchestvo),';',
+clienty.Passport,';',
+clienty.Telephone,';',
+izdeliya.Name,';',
+acts.Razmer,';',
+acts.Dlina,';',
+CONCAT(sotrudniki.Familiya,' ', sotrudniki.Imya,' ', sotrudniki.Otchestvo),';',
+sotrudniki.Telephone,';',
+DATE_FORMAT(acts.Date_N,'%d.%m.%Y'),';',
+DATE_FORMAT(acts.Date_K,'%d.%m.%Y'),';',
+SUM(sostav_acta.Kolichestvo))
+FROM acts INNER JOIN clienty ON acts.ID_Clienta = clienty.ID_Clienta
+INNER JOIN sotrudniki ON acts.ID_Sotrudnika = sotrudniki.ID_Sotrudnika
+INNER JOIN izdeliya ON acts.ID_Izdeliya = izdeliya.ID_Izdeliya
+INNER JOIN sostav_acta ON acts.ID_Acta = sostav_acta.ID_Acta
+WHERE acts.ID_Acta = @ID;";
+
+        public string Select_Print_Sostav_Acta = $@"SELECT materialy.Name,materialy.Ed_Izm,sostav_acta.Kolichestvo
+FROM sostav_acta INNER JOIN materialy ON sostav_acta.ID_Materiala = materialy.ID_Materiala
+INNER JOIN acts ON sostav_acta.ID_Acta = acts.ID_Acta
+WHERE acts.ID_Acta = @ID;";
+
+        public string Select_T5_Izdeliya = $@"SELECT izdeliya.Name, COUNT(izdeliya.ID_Izdeliya)
+FROM acts LEFT JOIN izdeliya ON acts.ID_Izdeliya = izdeliya.ID_Izdeliya
+GROUP BY izdeliya.ID_Izdeliya
+LIMIT 5;";
+
+        public string Select_T5_Materialy = $@"SELECT materialy.Name, COUNT(materialy.ID_Materiala)
+FROM sostav_acta LEFT JOIN materialy ON sostav_acta.ID_Materiala = materialy.ID_Materiala
+GROUP BY Materialy.ID_materiala
+LIMIT 5;";
+
+        public string Select_T5_Cheki = $@"SELECT CONCAT(clienty.Familiya,' ', clienty.Imya,' ', clienty.Otchestvo), Round(Max(cheki.Full_Summa),0)
+FROM cheki LEFT JOIN acts ON acts.ID_Acta = cheki.ID_Acta
+LEFT JOIN clienty ON acts.ID_Clienta = clienty.ID_Clienta
+GROUP BY cheki.ID_Cheka
+LIMIT 5;";
+
+        public string Select_Month_Viruchka = $@"SELECT SUM(cheki.Full_Summa) FROM cheki 
+WHERE cheki.Date BETWEEN DATE_FORMAT(CURDATE() - DAYOFMONTH(CURDATE( ))+1, '%Y-%m-%d') AND LAST_DAY(DATE_FORMAT(CURDATE() - DAYOFMONTH(CURDATE( ))+1, '%Y-%m-%d'))";
         //Select
 
         //Insert
@@ -140,11 +193,12 @@ WHERE cheki.ID_Cheka IS NULL AND acts.Date_K <= CURDATE();";
 
         public string Insert_Clienty = $@"INSERT INTO clienty (Familiya, Imya, Otchestvo, Telephone, Passport) VALUES (@Value1, @Value2, @Value3, @Value4, @Value5);";
 
-        public string Insert_Acts = $@"INSERT INTO acts (Date, ID_Clienta, ID_Sotrudnika, ID_Izdeliya, Date_N, Date_K) VALUES (@Value1, @Value2, @Value3, @Value4, @Value5, @Value6);";
+        public string Insert_Acts = $@"INSERT INTO acts (Date, ID_Clienta, ID_Sotrudnika, ID_Izdeliya, Razmer, Dlina, Date_N, Date_K) VALUES (@Value1, @Value2, @Value3, @Value4, @Value5, @Value6, @Value7, @Value8);";
 
         public string Insert_Sostav_Acta = $@"INSERT INTO sostav_acta (ID_Acta, ID_Materiala, Kolichestvo) VALUES (@Value1, @Value2, @Value3);";
 
-        public string Insert_Cheki = $@"INSERT INTO cheki (ID_Acta, Date, Stoimost_modeli, Stoimost_raboty, Stoimost_proby, Summa, ID_Skidki, Full_Summa) VALUES (@Value1, @Value2, @Value3, @Value4, @Value5, @Value6, @Value7, @Value8);";
+        public string Insert_Cheki = $@"INSERT INTO cheki (ID_Acta, Date, Stoimost_modeli, Stoimost_raboty, Stoimost_proby, Summa, ID_Skidki, Full_Summa, Garantiya) 
+VALUES (@Value1, @Value2, @Value3, @Value4, @Value5, @Value6, @Value7, @Value8, @Value9);";
         //Insert
 
         //Update
@@ -158,11 +212,11 @@ WHERE cheki.ID_Cheka IS NULL AND acts.Date_K <= CURDATE();";
 
         public string Update_Clienty = $@"UPDATE clienty SET Familiya = @Value1, Imya = @Value2, Otchestvo = @Value3, Telephone = @Value4, Passport = @Value5 WHERE ID_Clienta = @ID;";
 
-        public string Update_Acts = $@"UPDATE acts SET Date = @Value1, ID_Clienta = @Value2, ID_Sotrudnika = @Value3, ID_Izdeliya = @Value4, Date_N = @Value5, Date_K = @Value6 WHERE ID_Acta = @ID;";
+        public string Update_Acts = $@"UPDATE acts SET Date = @Value1, ID_Clienta = @Value2, ID_Sotrudnika = @Value3, ID_Izdeliya = @Value4, Razmer = @Value5, Dlina = @Value6, Date_N = @Value7, Date_K = @Value8 WHERE ID_Acta = @ID;";
 
         public string Update_Sostav_Acta = $@"UPDATE sostav_acta SET ID_Acta = @Value1, ID_Materiala = @Value2, Kolichestvo = @Value3 WHERE ID_Posicii = @ID;";
 
-        public string Update_Cheki = $@"UPDATE cheki SET ID_Acta = @Value1, Date = @Value2, Stoimost_modeli = @Value3, Stoimost_proby = @Value4, Stoimost_raboty = @Value5, Summa = @Value6, ID_Skidki = @Value7, Full_Summa = @Value8 WHERE ID_Cheka = @ID;";
+        public string Update_Cheki = $@"UPDATE cheki SET ID_Acta = @Value1, Date = @Value2, Stoimost_modeli = @Value3, Stoimost_proby = @Value4, Stoimost_raboty = @Value5, Summa = @Value6, ID_Skidki = @Value7, Full_Summa = @Value8, Garantiya = @Value9 WHERE ID_Cheka = @ID;";
         //Update
 
         //Delete

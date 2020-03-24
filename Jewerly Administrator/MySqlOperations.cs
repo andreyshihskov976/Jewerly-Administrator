@@ -8,12 +8,14 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Collections;
 using Application = System.Windows.Forms.Application;
+using Excel = Microsoft.Office.Interop.Excel;
 using ExcelApplication = Microsoft.Office.Interop.Excel.Application;
 using WordApplication = Microsoft.Office.Interop.Word.Application;
 using System.Threading.Tasks;
 using System.Reflection;
 using DataTable = System.Data.DataTable;
 using TextBox = System.Windows.Forms.TextBox;
+using XlLineStyle = Microsoft.Office.Interop.Excel.XlLineStyle;
 
 namespace Jewerly_Administrator
 {
@@ -191,7 +193,7 @@ namespace Jewerly_Administrator
             }
         }
 
-        public void Insert_Update_Delete(string query, string ID = null, string Value1 = null, string Value2 = null, string Value3 = null, string Value4 = null, string Value5 = null, string Value6 = null, string Value7 = null, string Value8 = null)
+        public void Insert_Update_Delete(string query, string ID = null, string Value1 = null, string Value2 = null, string Value3 = null, string Value4 = null, string Value5 = null, string Value6 = null, string Value7 = null, string Value8 = null, string Value9 = null)
         {
             try
             {
@@ -204,6 +206,7 @@ namespace Jewerly_Administrator
                 sqlCommand.Parameters.AddWithValue("Value6", Value6);
                 sqlCommand.Parameters.AddWithValue("Value7", Value7);
                 sqlCommand.Parameters.AddWithValue("Value8", Value8);
+                sqlCommand.Parameters.AddWithValue("Value9", Value9);
                 sqlCommand.Parameters.AddWithValue("ID", ID);
                 sqlCommand.ExecuteNonQuery();
             }
@@ -263,104 +266,164 @@ namespace Jewerly_Administrator
             range.Find.Execute(FindText: Identify, ReplaceWith: Text);
         }
 
-        public void Print_Dogovor(SaveFileDialog saveFileDialog, string ID)
+        public void Print_Cheki(SaveFileDialog saveFileDialog, string ID)
         {
-            WordApplication WordApp = null;
-            Documents Documents = null;
-            Document Document = null;
-            string output = null;
+            ExcelApplication ExcelApp = null;
+            Workbooks workbooks = null;
+            Workbook workbook = null;
+            Worksheet worksheet = null;
+            string output = Select_Text(MySqlQueries.Print_Cheki, ID);
             string fileName = null;
-            saveFileDialog.Title = "Сохранить договор как";
-            //output = Select_Text(MySqlQueries.Select_Print_Dogovory, ID);
-            saveFileDialog.FileName = "Договор " + output.Split(';')[0];
-            saveFileDialog.InitialDirectory = Application.StartupPath + "\\Договоры\\";
+            saveFileDialog.Title = "Сохранить чек как";
+            saveFileDialog.FileName = "Товарный чек " + output.Split(';')[1];
+            saveFileDialog.InitialDirectory = Application.StartupPath + "\\Чеки\\";
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
+                fileName = saveFileDialog.FileName;
                 try
                 {
-                    fileName = saveFileDialog.FileName;
-                    WordApp = new WordApplication();
-                    Documents = WordApp.Documents;
-                    Document = Documents.Open(Application.StartupPath + "\\blanks\\Dogovor.docx");
-                    Replace("{Договор}", output.Split(';')[0], Document);
-                    Replace("{Сотрудник}", output.Split(';')[1], Document);
-                    Replace("{Клиент}", output.Split(';')[2], Document);
-                    Replace("{Клиент}", output.Split(';')[2], Document);
-                    Replace("{Авто}", output.Split(';')[3], Document);
-                    Replace("{Гос.знак}", output.Split(';')[4], Document);
-                    Replace("{VIN-номер}", output.Split(';')[5], Document);
-                    Replace("{Стоимость авто}", output.Split(';')[6], Document);
-                    Replace("{Дата начала}", output.Split(';')[7], Document);
-                    Replace("{Дата окончания}", output.Split(';')[8], Document);
-                    Replace("{Дата начала}", output.Split(';')[7], Document);
-                    Replace("{Дата окончания}", output.Split(';')[8], Document);
-                    Replace("{Сумма}", output.Split(';')[9], Document);
-                    Replace("{Паспорт}", output.Split(';')[10], Document);
-                    Replace("{Ид номер}", output.Split(';')[11], Document);
-                    Replace("{Телефон}", output.Split(';')[12], Document);
-                    Replace("{Email}", output.Split(';')[13], Document);
-                    Replace("{Дата}", output.Split(';')[14], Document);
-                    Document.SaveAs(fileName);
-                    WordApp.Visible = true;
+                    ExcelApp = new ExcelApplication();
+                    workbooks = ExcelApp.Workbooks;
+                    workbook = workbooks.Open(Application.StartupPath + "\\blanks\\Чек.xlsx");
+                    worksheet = workbook.Worksheets.get_Item(1) as Worksheet;
+                    ExcelApp.Cells[5, 1] = "Товарный чек " + output.Split(';')[1];
+                    ExcelApp.Cells[7, 1] = "На основании акта: "+output.Split(';')[2];
+                    ExcelApp.Cells[9, 1] = "Оформил (Ф.И.О.): "+output.Split(';')[3];
+                    ExcelApp.Cells[10, 1] = "Заказчик (Ф.И.О.): " + output.Split(';')[4];
+                    ExcelApp.Cells[11, 1] = "Изделие: "+output.Split(';')[5];
+                    ExcelApp.Cells[12, 1] = "Размер изделия (кольцо): " + output.Split(';')[6];
+                    ExcelApp.Cells[13, 1] = "Длина изделия (браслет, колье, цепь): " + output.Split(';')[7];
+                    ExcelApp.Cells[14, 1] = "Стоимость модели: "+output.Split(';')[8];
+                    ExcelApp.Cells[15, 1] = "Стоимость работы мастера: "+output.Split(';')[9];
+                    ExcelApp.Cells[16, 1] = "Стоимость штампирования пробы: "+output.Split(';')[10];
+                    DataTable data = Select_DataTable(MySqlQueries.Select_Sostav_Cheka,ID);
+                    int ExCol = 1;
+                    int ExRow = 19;
+                    for (int i = 0; i < data.Rows.Count; i++)
+                    {
+                        ExCol = 1;
+                        for (int j = 0; j < data.Columns.Count; j++)
+                        {
+                            ExcelApp.Cells[ExRow, ExCol] = data.Rows[i][j].ToString();
+                            ExCol++;
+                        }
+                        ExRow++;
+                    }
+                    var cells = worksheet.get_Range("A19 ", "D" + (ExRow - 1).ToString());
+                    cells.Borders[XlBordersIndex.xlInsideVertical].LineStyle = XlLineStyle.xlContinuous;
+                    cells.Borders[XlBordersIndex.xlInsideHorizontal].LineStyle = XlLineStyle.xlContinuous;
+                    cells.Borders[XlBordersIndex.xlEdgeTop].LineStyle = XlLineStyle.xlContinuous;
+                    cells.Borders[XlBordersIndex.xlEdgeRight].LineStyle = XlLineStyle.xlContinuous;
+                    cells.Borders[XlBordersIndex.xlEdgeLeft].LineStyle = XlLineStyle.xlContinuous;
+                    cells.Borders[XlBordersIndex.xlEdgeBottom].LineStyle = XlLineStyle.xlContinuous;
+                    ExRow++;
+                    Excel.Range Cells = worksheet.get_Range("A"+ExRow, "D"+ExRow).Cells;
+                    Cells.Merge(Type.Missing);
+                    ExcelApp.Rows.RowHeight = 15;
+                    ExcelApp.Cells[ExRow,1] = "Итого (без учета скидки): " + output.Split(';')[11];
+                    ExRow++;
+                    Cells = worksheet.get_Range("A" + ExRow, "D" + ExRow).Cells;
+                    Cells.Merge(Type.Missing);
+                    ExcelApp.Cells[ExRow, 1] = "Предусмотрена скидка: " + output.Split(';')[12];
+                    ExRow++;
+                    Cells = worksheet.get_Range("A" + ExRow, "D" + ExRow).Cells;
+                    Cells.Merge(Type.Missing);
+                    ExcelApp.Cells[ExRow, 1] = "Итого (с учетом скидки): " + output.Split(';')[13];
+                    ExRow++;
+                    Cells = worksheet.get_Range("A" + ExRow, "D" + ExRow).Cells;
+                    Cells.Merge(Type.Missing);
+                    ExcelApp.Cells[ExRow, 1] = "Гарантия: " + output.Split(';')[14];
+                    ExRow++;
+                    workbook.SaveAs(fileName);
+                    ExcelApp.Visible = true;
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Marshal.ReleaseComObject(Documents);
-                    Marshal.ReleaseComObject(Document);
-                    Marshal.ReleaseComObject(WordApp);
+                    Marshal.ReleaseComObject(worksheet);
+                    Marshal.ReleaseComObject(workbook);
+                    Marshal.ReleaseComObject(workbooks);
+                    Marshal.ReleaseComObject(ExcelApp);
                 }
                 finally
                 {
-                    Marshal.ReleaseComObject(Documents);
-                    Marshal.ReleaseComObject(Document);
-                    Marshal.ReleaseComObject(WordApp);
+                    Marshal.ReleaseComObject(worksheet);
+                    Marshal.ReleaseComObject(workbook);
+                    Marshal.ReleaseComObject(workbooks);
+                    Marshal.ReleaseComObject(ExcelApp);
                 }
             }
         }
 
         public void Print_Acts(SaveFileDialog saveFileDialog, string ID)
         {
-            WordApplication WordApp = null;
-            Documents Documents = null;
-            Document Document = null;
-            string output = null;
+            ExcelApplication ExcelApp = null;
+            Workbooks workbooks = null;
+            Workbook workbook = null;
+            Worksheet worksheet = null;
+            string output = Select_Text(MySqlQueries.Print_Acts, ID);
             string fileName = null;
             saveFileDialog.Title = "Сохранить акт как";
-            //output = Select_Text(MySqlQueries.Select_Print_Acts, ID);
-            saveFileDialog.FileName = output.Split(';')[0];
+            saveFileDialog.FileName = "Акт на изготовление " + output.Split(';')[0];
             saveFileDialog.InitialDirectory = Application.StartupPath + "\\Акты\\";
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
+                fileName = saveFileDialog.FileName;
                 try
                 {
-                    fileName = saveFileDialog.FileName;
-                    WordApp = new WordApplication();
-                    Documents = WordApp.Documents;
-                    Document = Documents.Open(Application.StartupPath + "\\blanks\\Act.docx");
-                    Replace("{Наименование}", output.Split(';')[0], Document);
-                    Replace("{Договор}", output.Split(';')[1], Document);
-                    Replace("{Сотрудник}", output.Split(';')[2], Document);
-                    Replace("{Сотрудник}", output.Split(';')[2], Document);
-                    Replace("{Автомобиль}", output.Split(';')[3], Document);
-                    Replace("{Клиент}", output.Split(';')[4], Document);
-                    Replace("{Клиент}", output.Split(';')[4], Document);
-                    Replace("{Комментарий}", output.Split(';')[5], Document);
-                    Document.SaveAs(fileName);
-                    WordApp.Visible = true;
+                    ExcelApp = new ExcelApplication();
+                    workbooks = ExcelApp.Workbooks;
+                    workbook = workbooks.Open(Application.StartupPath + "\\blanks\\Акт.xlsx");
+                    worksheet = workbook.Worksheets.get_Item(1) as Worksheet;
+                    ExcelApp.Cells[1, 2] = "Акт на изготовление " + output.Split(';')[0];
+                    ExcelApp.Cells[5, 2] = "Заказчик (Ф.И.О.): " + output.Split(';')[1];
+                    ExcelApp.Cells[6, 2] = "Номер паспорта: " + output.Split(';')[2];
+                    ExcelApp.Cells[7, 2] = "Телефон: " + output.Split(';')[3];
+                    ExcelApp.Cells[5, 8] = "Изделие: " + output.Split(';')[4];
+                    ExcelApp.Cells[6, 8] = "Размер изделия (кольцо): " + output.Split(';')[5];
+                    ExcelApp.Cells[7, 8] = "Длина изделия (браслет, колье, цепь): " + output.Split(';')[6];
+                    ExcelApp.Cells[9, 2] = "Оформил (Ф.И.О.): " + output.Split(';')[7];
+                    ExcelApp.Cells[10, 2] = "Телефон: " + output.Split(';')[8];
+                    ExcelApp.Cells[11, 8] = "Дата начала срока изготовления: " + output.Split(';')[9];
+                    ExcelApp.Cells[12, 8] = "Дата окончания срока изготовления: " + output.Split(';')[10];
+                    DataTable data = Select_DataTable(MySqlQueries.Select_Print_Sostav_Acta, ID);
+                    int ExCol = 2;
+                    int ExRow = 13;
+                    for (int i = 0; i < data.Rows.Count; i++)
+                    {
+                        ExCol = 2;
+                        for (int j = 0; j < data.Columns.Count; j++)
+                        {
+                            ExcelApp.Cells[ExRow, ExCol] = data.Rows[i][j].ToString();
+                            ExCol++;
+                        }
+                        ExRow++;
+                    }
+                    var cells = worksheet.get_Range("B13 ", "D" + (ExRow - 1).ToString());
+                    cells.Borders[XlBordersIndex.xlInsideVertical].LineStyle = XlLineStyle.xlContinuous;
+                    cells.Borders[XlBordersIndex.xlInsideHorizontal].LineStyle = XlLineStyle.xlContinuous;
+                    cells.Borders[XlBordersIndex.xlEdgeTop].LineStyle = XlLineStyle.xlContinuous;
+                    cells.Borders[XlBordersIndex.xlEdgeRight].LineStyle = XlLineStyle.xlContinuous;
+                    cells.Borders[XlBordersIndex.xlEdgeLeft].LineStyle = XlLineStyle.xlContinuous;
+                    cells.Borders[XlBordersIndex.xlEdgeBottom].LineStyle = XlLineStyle.xlContinuous;
+                    ExcelApp.Cells[ExRow, 2] = "Итого вес: " + output.Split(';')[11];
+                    workbook.SaveAs(fileName);
+                    ExcelApp.Visible = true;
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Marshal.ReleaseComObject(Documents);
-                    Marshal.ReleaseComObject(Document);
-                    Marshal.ReleaseComObject(WordApp);
+                    Marshal.ReleaseComObject(worksheet);
+                    Marshal.ReleaseComObject(workbook);
+                    Marshal.ReleaseComObject(workbooks);
+                    Marshal.ReleaseComObject(ExcelApp);
                 }
                 finally
                 {
-                    Marshal.ReleaseComObject(Documents);
-                    Marshal.ReleaseComObject(Document);
-                    Marshal.ReleaseComObject(WordApp);
+                    Marshal.ReleaseComObject(worksheet);
+                    Marshal.ReleaseComObject(workbook);
+                    Marshal.ReleaseComObject(workbooks);
+                    Marshal.ReleaseComObject(ExcelApp);
                 }
             }
         }

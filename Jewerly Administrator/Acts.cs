@@ -59,6 +59,8 @@ namespace Jewerly_Administrator
                     MySqlOperations.Select_Text(MySqlQueries.Select_Clienty_ID,null,comboBox2.Text),
                     MySqlOperations.Select_Text(MySqlQueries.Select_Sotrudniki_ID, null, comboBox3.Text),
                     MySqlOperations.Select_Text(MySqlQueries.Select_Izdeliya_ID, null, comboBox4.Text),
+                    numericUpDown2.Value.ToString().Replace(',','.'),
+                    numericUpDown3.Value.ToString().Replace(',','.'),
                     date1, date2);
                 Load_Table1();
                 Clear1();
@@ -71,15 +73,24 @@ namespace Jewerly_Administrator
 
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            Index = dataGridView1.SelectedRows[0].Index;
-            MySqlOperations.Search_In_ComboBox(dataGridView1.SelectedRows[0].Cells[2].Value.ToString(), comboBox2);
-            MySqlOperations.Search_In_ComboBox(dataGridView1.SelectedRows[0].Cells[3].Value.ToString(), comboBox3);
-            MySqlOperations.Search_In_ComboBox(dataGridView1.SelectedRows[0].Cells[4].Value.ToString(), comboBox4);
-            dateTimePicker1.MinDate = DateTime.Parse(dataGridView1.SelectedRows[0].Cells[5].Value.ToString());
-            dateTimePicker1.Value = dateTimePicker1.MinDate;
-            dateTimePicker2.MinDate = DateTime.Parse(dataGridView1.SelectedRows[0].Cells[5].Value.ToString());
-            button1.Enabled = false;
-            button2.Enabled = true;
+            if (MessageBox.Show("Хотите распечатать чек или отредактировать запись." + '\n' + "Да - распечатать. Нет - перейти к редактированию.", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+            {
+                Index = dataGridView1.SelectedRows[0].Index;
+                MySqlOperations.Search_In_ComboBox(dataGridView1.SelectedRows[0].Cells[2].Value.ToString(), comboBox2);
+                MySqlOperations.Search_In_ComboBox(dataGridView1.SelectedRows[0].Cells[3].Value.ToString(), comboBox3);
+                MySqlOperations.Search_In_ComboBox(dataGridView1.SelectedRows[0].Cells[4].Value.ToString(), comboBox4);
+                numericUpDown2.Value = decimal.Parse(dataGridView1.SelectedRows[0].Cells[5].Value.ToString());
+                numericUpDown3.Value = decimal.Parse(dataGridView1.SelectedRows[0].Cells[6].Value.ToString());
+                dateTimePicker1.MinDate = DateTime.Parse(dataGridView1.SelectedRows[0].Cells[7].Value.ToString());
+                dateTimePicker1.Value = dateTimePicker1.MinDate;
+                dateTimePicker2.MinDate = DateTime.Parse(dataGridView1.SelectedRows[0].Cells[8].Value.ToString());
+                button1.Enabled = false;
+                button2.Enabled = true;
+            }
+            else
+            {
+                MySqlOperations.Print_Acts(saveFileDialog1,dataGridView1.SelectedRows[0].Cells[0].Value.ToString());
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -93,6 +104,8 @@ namespace Jewerly_Administrator
                     MySqlOperations.Select_Text(MySqlQueries.Select_Clienty_ID, null, comboBox2.Text),
                     MySqlOperations.Select_Text(MySqlQueries.Select_Sotrudniki_ID, null, comboBox3.Text),
                     MySqlOperations.Select_Text(MySqlQueries.Select_Izdeliya_ID, null, comboBox4.Text),
+                    numericUpDown2.Value.ToString().Replace(',', '.'),
+                    numericUpDown3.Value.ToString().Replace(',', '.'),
                     date1, date2);
                 Load_Table1();
                 Clear1();
@@ -112,6 +125,8 @@ namespace Jewerly_Administrator
             comboBox4.SelectedItem = comboBox4.Items[0];
             dateTimePicker1.MinDate = DateTime.Now;
             dateTimePicker1.Value = dateTimePicker1.MinDate;
+            numericUpDown2.Value = numericUpDown2.Minimum;
+            numericUpDown3.Value = numericUpDown3.Minimum;
             button2.Enabled = false;
             button1.Enabled = true;
         }
@@ -210,6 +225,41 @@ namespace Jewerly_Administrator
         {
             if (MessageBox.Show("Вы действительно хотите удалить запись?", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 MySqlOperations.Insert_Update_Delete(MySqlQueries.Delete_Sostav_Acta, dataGridView2.SelectedRows[0].Cells[0].Value.ToString());
+        }
+
+        private void Acts_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                if (MySqlOperations.Select_Text(MySqlQueries.Select_Exists_Sostav_Acta, row.Cells[0].Value.ToString()) == "0")
+                {
+                    MessageBox.Show("В некоторых актах не заполнена табличная часть." + '\n' + "Заполните табличные части этих актов, прежде, чем закрывать форму.", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    dataGridView1.ClearSelection();
+                    dataGridView1.Rows[row.Index].Selected = true;
+                    e.Cancel = true;
+                    return;
+                }
+            }
+        }
+
+        private void numericUpDown3_ValueChanged(object sender, EventArgs e)
+        {
+            if (numericUpDown3.Value == 26)
+                numericUpDown3.Value = 35;
+            if (numericUpDown3.Value == 34)
+                numericUpDown3.Value = 25;
+            if (numericUpDown3.Value == 1)
+                numericUpDown3.Value = 15;
+            if (numericUpDown3.Value == 14)
+                numericUpDown3.Value = 0;
+        }
+
+        private void numericUpDown2_ValueChanged(object sender, EventArgs e)
+        {
+            if (numericUpDown2.Value == decimal.Parse("0,5"))
+                numericUpDown2.Value = 15;
+            if (numericUpDown2.Value == decimal.Parse("14,5"))
+                numericUpDown2.Value = 0;
         }
     }
 }

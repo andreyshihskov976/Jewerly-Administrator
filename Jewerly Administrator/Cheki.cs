@@ -36,16 +36,13 @@ namespace Jewerly_Administrator
             dateTimePicker3.Value = DateTime.Now;
             dateTimePicker3.MinDate = dateTimePicker3.Value;
             dataGridView1.Columns[0].Visible = false;
+            comboBox2.SelectedItem = comboBox2.Items[0];
             comboBox5.SelectedItem = comboBox5.Items[0];
             comboBox6.SelectedItem = comboBox6.Items[0];
             comboBox8.SelectedItem = comboBox8.Items[0];
         }
 
-        private void Load_Table2(string ID = null)
-        {
-            MySqlOperations.Select_DataGridView(MySqlQueries.Select_Sostav_Cheka, dataGridView2, ID);
-            dataGridView2.Columns[0].Visible = false;
-        }
+        private void Load_Table2(string ID = null) => MySqlOperations.Select_DataGridView(MySqlQueries.Select_Sostav_Cheka, dataGridView2, ID);
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -60,7 +57,8 @@ namespace Jewerly_Administrator
                     MySqlOperations.Select_Text(MySqlQueries.Select_Full_Sum_Cheka,
                         MySqlOperations.Select_Text(MySqlQueries.Select_Acts_ID, null, comboBox1.Text),
                         comboBox5.Text.Split(' ')[1], comboBox6.Text.Split(' ')[2], textBox4.Text.Split(' ')[0], 
-                        MySqlOperations.Select_Text(MySqlQueries.Select_Skidki_ID, null, comboBox8.Text)).Replace(',', '.'));
+                        MySqlOperations.Select_Text(MySqlQueries.Select_Skidki_ID, null, comboBox8.Text)).Replace(',', '.'),
+                    comboBox2.Text);
                 Load_Table1();
                 Clear1();
                 dataGridView1.ClearSelection();
@@ -69,15 +67,22 @@ namespace Jewerly_Administrator
 
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            Index = dataGridView1.SelectedRows[0].Index;
-            dateTimePicker3.MinDate = DateTime.Parse(MySqlOperations.Select_Text(MySqlQueries.Select_Date_Cheka, dataGridView1.SelectedRows[0].Cells[0].Value.ToString()));
-            dateTimePicker3.Value = dateTimePicker3.MinDate;
-            MySqlOperations.Search_In_ComboBox(dataGridView1.SelectedRows[0].Cells[2].Value.ToString(), comboBox1);
-            MySqlOperations.Search_In_ComboBox(dataGridView1.SelectedRows[0].Cells[3].Value.ToString().Replace(",00", ""), comboBox5);
-            MySqlOperations.Search_In_ComboBox(dataGridView1.SelectedRows[0].Cells[4].Value.ToString().Replace(",00", ""), comboBox6);
-            MySqlOperations.Search_In_ComboBox(dataGridView1.SelectedRows[0].Cells[7].Value.ToString(), comboBox8);
-            button1.Enabled = false;
-            button2.Enabled = true;
+            if (MessageBox.Show("Хотите распечатать чек или отредактировать запись." + '\n' + "Да - распечатать. Нет - перейти к редактированию.", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+            {
+                Index = dataGridView1.SelectedRows[0].Index;
+                dateTimePicker3.MinDate = DateTime.Parse(MySqlOperations.Select_Text(MySqlQueries.Select_Date_Cheka, dataGridView1.SelectedRows[0].Cells[0].Value.ToString()));
+                dateTimePicker3.Value = dateTimePicker3.MinDate;
+                MySqlOperations.Search_In_ComboBox(dataGridView1.SelectedRows[0].Cells[2].Value.ToString(), comboBox1);
+                MySqlOperations.Search_In_ComboBox(dataGridView1.SelectedRows[0].Cells[3].Value.ToString().Replace(",00", ""), comboBox5);
+                MySqlOperations.Search_In_ComboBox(dataGridView1.SelectedRows[0].Cells[4].Value.ToString().Replace(",00", ""), comboBox6);
+                MySqlOperations.Search_In_ComboBox(dataGridView1.SelectedRows[0].Cells[7].Value.ToString(), comboBox8);
+                button1.Enabled = false;
+                button2.Enabled = true;
+            }
+            else
+            {
+                MySqlOperations.Print_Cheki(saveFileDialog1, dataGridView1.SelectedRows[0].Cells[0].Value.ToString());
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -93,7 +98,8 @@ namespace Jewerly_Administrator
                 MySqlOperations.Select_Text(MySqlQueries.Select_Full_Sum_Cheka,
                     MySqlOperations.Select_Text(MySqlQueries.Select_Acts_ID, null, comboBox1.Text),
                     comboBox5.Text.Split(' ')[1], comboBox6.Text.Split(' ')[2], textBox4.Text.Split(' ')[0],
-                    MySqlOperations.Select_Text(MySqlQueries.Select_Skidki_ID, null, comboBox8.Text)).Replace(',', '.'));
+                    MySqlOperations.Select_Text(MySqlQueries.Select_Skidki_ID, null, comboBox8.Text)).Replace(',', '.'),
+                comboBox2.Text);
             Load_Table1();
             Clear1();
             dataGridView1.ClearSelection();
@@ -105,6 +111,7 @@ namespace Jewerly_Administrator
         private void Clear1()
         {
             comboBox1.SelectedItem = comboBox1.Items[0];
+            comboBox2.SelectedItem = comboBox2.Items[0];
             comboBox5.SelectedItem = comboBox5.Items[0];
             comboBox6.SelectedItem = comboBox6.Items[0];
             comboBox8.SelectedItem = comboBox8.Items[0];
@@ -143,7 +150,7 @@ namespace Jewerly_Administrator
         {
             if (dataGridView1.Rows.Count >= 1 && dataGridView1.SelectedRows.Count == 1)
             {
-                ID_Acta = dataGridView1.SelectedRows[0].Cells[2].Value.ToString().Split(' ')[1];
+                ID_Acta = dataGridView1.SelectedRows[0].Cells[0].Value.ToString();
                 Load_Table2(ID_Acta);
             }
         }
